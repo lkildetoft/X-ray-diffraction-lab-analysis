@@ -32,27 +32,23 @@ def scherrer(): #define scherrer function for task 7b
 
     t = (k*wl)/(beta*np.cos(theta))
 
-    file = open("t.txt", "w+")
+    file = open("t.txt", "w+") #save calculated value as t.txt
     file.write(str(t))
     file.close()
 
 def miller(): #miller function for indexing reflections, returns rounded values = h^2 + k^2 + l^2
 
-    global indices_list
     lattice_const = 4.086e-10
 
     indices_root = [(2*lattice_const*np.sin((twotheta/2)*((np.pi)/180)))/wl for twotheta in ag_xdata[peaksag_clean]]
     indices_list = [round(indices**2) for indices in indices_root]
 
-    file = open("miller.txt", "w+") #save calculated milller values to t.txt
+    file = open("miller.txt", "w+") #save calculated milller values to miller.txt
     file.write(str(indices_list))
     file.close()
 
 scherrer()
 miller()
-
-
-
 
 """
 mixture
