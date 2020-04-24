@@ -15,16 +15,15 @@ ag_ydata = np.array(ag[1])
 
 peaksag, _ = signal.find_peaks(ag_ydata, height = 45, distance=250) #find peaks
 peaksag_clean = np.delete(peaksag, [0, 1]) #delete false peaks
-fwhm = signal.peak_widths(ag_ydata, peaksag_clean, rel_height=0.5)
+fwhm = signal.peak_widths(ag_ydata, peaksag_clean, rel_height=0.5) #find fwhm
 
 np.savetxt("2theta_peaks_ag.txt", ag_xdata[peaksag_clean]) #save 2theta values as txt
 
 def scherrer(): #define scherrer function for task 7b
 
-    global t
     global wl
-    k = 0.94
     wl = 1.54e-10
+    k = 0.94
 
     fwhmlist = fwhm[0]
     beta = sum([wide*((np.pi)/180) for wide in fwhmlist])/len([wide*((np.pi)/180) for wide in fwhmlist])
@@ -33,9 +32,11 @@ def scherrer(): #define scherrer function for task 7b
 
     t = (k*wl)/(beta*np.cos(theta))
 
-    return t
+    file = open("t.txt", "w+")
+    file.write(str(t))
+    file.close()
 
-def miller(): #miller function for indexing reflections, returns rounded values of h^2 + k^2 + l^2
+def miller(): #miller function for indexing reflections, returns rounded values = h^2 + k^2 + l^2
 
     global indices_list
     lattice_const = 4.086e-10
@@ -43,18 +44,15 @@ def miller(): #miller function for indexing reflections, returns rounded values 
     indices_root = [(2*lattice_const*np.sin((twotheta/2)*((np.pi)/180)))/wl for twotheta in ag_xdata[peaksag_clean]]
     indices_list = [round(indices**2) for indices in indices_root]
 
-    return indices_list
+    file = open("miller.txt", "w+") #save calculated milller values to t.txt
+    file.write(str(indices_list))
+    file.close()
 
 scherrer()
 miller()
 
-file = open("t.txt", "w+") #save calculated scherrer value to t.txt
-file.write(str(t))
-file.close()
 
-file = open("miller.txt", "w+") #save calculated milller values to t.txt
-file.write(str(indices_list))
-file.close()
+
 
 """
 mixture
