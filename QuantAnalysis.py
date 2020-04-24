@@ -27,7 +27,6 @@ def scherrer(): #define scherrer function for task 7b
 
     fwhmlist = fwhm[0]
     beta = sum([wide*((np.pi)/180) for wide in fwhmlist])/len([wide*((np.pi)/180) for wide in fwhmlist])
-
     theta = sum([(twotheta/2)*((np.pi)/180) for twotheta in ag_xdata[peaksag_clean]])/len([(twotheta/2)*((np.pi)/180) for twotheta in ag_xdata[peaksag_clean]])
 
     t = (k*wl)/(beta*np.cos(theta))
